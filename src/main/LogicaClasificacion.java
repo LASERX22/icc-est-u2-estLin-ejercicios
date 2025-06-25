@@ -15,7 +15,17 @@ public class LogicaClasificacion {
      *         Salida: "odnuM aloH"
      */
     public String invertirCadena(String texto) {
-        return "";
+        StringBuilder builder = new StringBuilder();
+        Stack<Character> letras = new Stack<>();
+        for (int i = 0; i < texto.length(); i++) {
+            letras.push(texto.charAt(i));
+        }
+        while(!letras.isEmpty()){
+            Character nLetra = letras.pop();
+            builder.append(nLetra);
+        }
+        return builder.toString();
+
     }
 
     /**
@@ -30,6 +40,31 @@ public class LogicaClasificacion {
      *         Salida: true
      */
     public boolean validarSimbolos(String expresion) {
+        Stack<Character> pila = new Stack<>();
+        for (int i = 0; i < expresion.length(); i++) {
+            char caracter= expresion.charAt(i);
+            if (caracter=='(' || caracter=='['||caracter=='{') {
+                pila.push(caracter);
+            }
+            if(caracter==')' || caracter==']'||caracter=='}'){
+                if (pila.isEmpty()){
+                    return false;
+                }
+                char ultimo = pila.peek();
+                if(caracter==')' && ultimo=='('){
+                    pila.pop();
+                }
+                if(caracter==']' && ultimo=='['){
+                    pila.pop();
+                }
+                if(caracter=='}' && ultimo=='{'){
+                    pila.pop();
+                }
+            }
+        }
+        if (pila.isEmpty()){
+            return true;
+        }
         return false;
     }
 
@@ -43,8 +78,21 @@ public class LogicaClasificacion {
      *         Salida: [1, 2, 3, 4]
      */
     public List<Integer> ordenarPila(Stack<Integer> pila) {
-
-        return new ArrayList<>();
+        Stack<Integer> newStack = new Stack<>();
+        if(pila==null){
+            System.out.println("No se encuentran numeros");
+        }
+        while(!pila.isEmpty()) { 
+            int menor=pila.pop(); 
+            while(!newStack.isEmpty() && newStack.peek()>menor){ 
+                pila.push(newStack.pop()); 
+            newStack.push(menor);
+            }
+        }
+        while(!newStack.isEmpty()){
+            pila.push(newStack.pop());
+        }
+        return new ArrayList<>(pila);
     }
 
     /**
